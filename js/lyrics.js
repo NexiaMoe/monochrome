@@ -225,8 +225,8 @@ export class LyricsManager {
       const script = document.createElement("script");
       script.type = "module";
       script.src =
-        // "https://cdn.jsdelivr.net/npm/@uimaxbai/am-lyrics@0.6.2/dist/src/am-lyrics.min.js";
-        "./public/dist/am-lyrics.js";
+        "https://cdn.jsdelivr.net/gh/NexiaMoe/apple-music-web-components@dev-ani/dist/src/am-lyrics.js";
+      // "./public/dist/am-lyrics.js";
 
       script.onload = () => {
         if (typeof customElements !== "undefined") {
