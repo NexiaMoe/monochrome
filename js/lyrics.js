@@ -225,7 +225,8 @@ export class LyricsManager {
       const script = document.createElement("script");
       script.type = "module";
       script.src =
-        "https://cdn.jsdelivr.net/npm/@uimaxbai/am-lyrics@0.6.2/dist/src/am-lyrics.min.js";
+        // "https://cdn.jsdelivr.net/npm/@uimaxbai/am-lyrics@0.6.2/dist/src/am-lyrics.min.js";
+        "./public/dist/am-lyrics.js";
 
       script.onload = () => {
         if (typeof customElements !== "undefined") {
@@ -646,15 +647,16 @@ export class LyricsManager {
     this.isRomajiMode = !this.isRomajiMode;
     this.setRomajiMode(this.isRomajiMode);
 
+    // Toggle the component's romaji attribute
+    // The component handles conversion/restoration internally
     if (amLyricsElement) {
       if (this.isRomajiMode) {
-        // Turning ON: Setup observer and convert immediately
-        this.setupLyricsObserver(amLyricsElement);
-        await this.convertLyricsContent(amLyricsElement);
+        amLyricsElement.setAttribute("romaji", "");
+        // Also set the property directly for reactive update
+        amLyricsElement.romaji = true;
       } else {
-        // Turning OFF: Stop observer and restore original Japanese
-        this.stopLyricsObserver();
-        this.restoreAllLines(amLyricsElement);
+        amLyricsElement.removeAttribute("romaji");
+        amLyricsElement.romaji = false;
       }
     }
 
@@ -767,6 +769,12 @@ async function renderLyricsComponent(
     amLyrics.setAttribute("hover-background-color", "rgba(59, 130, 246, 0.14)");
     amLyrics.setAttribute("autoscroll", "");
     amLyrics.setAttribute("interpolate", "");
+
+    // Enable romaji mode in the component if user has it enabled
+    if (lyricsManager.getRomajiMode()) {
+      amLyrics.setAttribute("romaji", "");
+    }
+
     amLyrics.style.height = "100%";
     amLyrics.style.width = "100%";
 
